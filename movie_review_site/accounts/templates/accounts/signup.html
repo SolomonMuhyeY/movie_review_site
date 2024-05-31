@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Sign Up
+{% endblock title %}
+
+{% block content %}
+<div class="flex items-center justify-center h-screen my-12">
+  <div class="max-w-md w-full bg-gray-950 text-white shadow-md rounded-lg p-8 space-y-6">
+    <h2 class="text-2xl font-bold text-center text-gray-100">Sign Up</h2>
+    {% if err_msg %}
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold">Error:</strong>
+      <span class="block sm:inline">{{ err_msg }}</span>
+    </div>
+    {% endif %}
+    <form method="POST" class="space-y-6">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="grid grid-cols-1 gap-y-6">
+        <div>
+          <label for="username" class="text-sm font-medium text-gray-100 my-2">Username</label>
+          {{ form.username }}
+        </div>
+        <div>
+          <label for="password1" class="text-sm font-medium text-gray-100 my-2">Password</label>
+          {{ form.password1 }}
+        </div>
+        <div>
+          <label for="password2" class="text-sm font-medium text-gray-100 my-2">Confirm Password</label>
+          {{ form.password2 }}
+        </div>
+      </div>
+      <div>
+        <button type="submit"
+          class="w-full py-3 px-6 bg-blue-500 text-white font-bold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+          Sign Up
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}
