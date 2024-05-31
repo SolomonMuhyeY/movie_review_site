@@ -11,6 +11,7 @@
   <style>
     .card {
       transition: transform 0.3s ease-in-out;
+      margin: 3rem 0;
     }
 
     .card:hover {
@@ -25,18 +26,19 @@
     <div class="mx-5">
       {% for news in newss %}
       <div class="col">
-        <div class="card h-100">
+        <div class="card p-2 h-100">
           <div class="row g-8">
-            <div class="col-md-4">
+            <div class="col">
               <img src="{{ news.image.url }}" class="card-img-top h-100" alt="news image">
             </div>
-            <div class="col-md-8">
-              <div class="card-body h-100 d-flex flex-column justify-content-between">
+            <div class="col">
+              <div class="card-body h-100 d-flex gap-4 flex-column justify-content-between">
                 <div>
                   <h5 class="card-title">{{ news.title }}</h5>
                   <p class="card-text">{{ news.description }}</p>
                 </div>
-                <p class="card-text"><small class="text-muted">by {{ news.author }}</small></p>
+                <p class="card-text"><small class="text-muted bg-success p-2">by {{ news.author }}</small>
+                </p>
               </div>
             </div>
           </div>
