@@ -1,4 +1,5 @@
 from django.db import IntegrityError
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
@@ -15,17 +16,15 @@ def signup(request):
                     user = User.objects.create_user(
                         username=form.cleaned_data['username'],
                         password=form.cleaned_data['password1'],
-                        email='default@gmail.com'
-                    )
+                        email=form.cleaned_data['email'],
+                       )
                     user.save()
-                    login(user)
+                    login(request,user)
                     return redirect('home')
                 except IntegrityError:
-                    err_msg = "Username already exists. Please choose a different username."
-                    return render(request, 'accounts/signup.html', {'form': form, 'err_msg': err_msg})
+                    form.add_error()
             else:
-                err_msg = "Passwords do not match."
-                return render(request, 'accounts/signup.html', {'form': form, 'err_msg': err_msg})
+                form.add_error()
         else:
             return render(request, 'accounts/signup.html', {'form': form})
     else:
@@ -36,9 +35,10 @@ def loginaccount(request):
     else:
         user = authenticate(request,
                             username = request.POST['username'],
-                            password = request.POST['password'],                            
+                            password = request.POST['password'],                       
                             )
-        if user is None:
+        
+        if user  is None:
             return render(request,'accounts/login.html',{'form':AuthenticationForm(),'error':'User name and password does\'t match.'})
         else:
             login(request,user)
