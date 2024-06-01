@@ -28,3 +28,11 @@ def createreview(request,movie_id):
       return redirect('detail',newReview.movie.id)
     except ValueError:
      return render(request,'movie/createreview.html', {'form':ReviewForm(),'error':'bad data passed in'})
+# @login_required
+def deletereview(request,review_id):
+  review = get_object_or_404(Review, pk = review_id, user= request.user)
+  if request.method == 'POST':
+    review.delete()
+    return redirect('detail', movie_id = review.movie.id)
+  return render(request,'movie/confirm_delete.html',{'review':review})
+    
