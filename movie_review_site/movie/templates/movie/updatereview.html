@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Update Review
+{% endblock title %}
+
+{% block content %}
+<div class="container mx-auto my-6 p-4 bg-gray-800 rounded-lg shadow-lg">
+  <h2 class="text-2xl font-extrabold text-lime-300">Update Your Review</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit"
+      class="py-2 px-4 my-3 bg-blue-600 text-white font-bold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Update</button>
+  </form>
+  {% if error %}
+  <p class="text-red-500">{{ error }}</p>
+  {% endif %}
+</div>
+{% endblock content %}
