@@ -29,4 +29,7 @@ class UserCreateForm(UserCreationForm):
             user_profile.save()
         return user
 
-
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['image']
