@@ -6,9 +6,9 @@
 
 {% block content %}
 <div class="flex items-center justify-center h-screen -my-12">
-  <div class="max-w-lg w-full bg-gray-700 text-white shadow-md rounded-lg p-8 space-y-3">
+  <div class="max-w-lg w-full bg-gray-800 text-white shadow-md rounded-lg p-8 space-y-3">
     <h2 class="text-2xl font-bold text-center text-gray-100">Sign Up</h2>
-    <form method="POST" class="space-y-2">
+    <form method="POST" enctype="multipart/form-data" class="space-y-2">
       {% csrf_token %}
       {{ form.non_field_errors }}
       <div class="grid grid-cols-1 gap-y-3">
@@ -45,6 +45,15 @@
             {{ form.password2 }}
             <small class="text-red-500">
               {{ form.password2.errors }}
+            </small>
+          </div>
+        </div>
+        <div class="flex flex-row items-center space-x-4">
+          <label for="profile" class="text-sm font-medium text-gray-100 w-1/3">Upload Your Image</label>
+          <div class="w-2/3">
+            {{ form.profile }}
+            <small class="text-red-500">
+              {{ form.profile.errors }}
             </small>
           </div>
         </div>
