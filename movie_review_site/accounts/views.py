@@ -5,20 +5,17 @@ from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import UserCreateForm
+
+from .models import UserProfile
+from .forms import UserCreateForm ,UserProfileForm
 # Create your views here.
 def signup(request):
     if request.method == 'POST':
-        form = UserCreateForm(request.POST)
+        form = UserCreateForm(request.POST,request.FILES)
         if form.is_valid():
             if form.cleaned_data['password1'] == form.cleaned_data['password2']:
                 try:
-                    user = User.objects.create_user(
-                        username=form.cleaned_data['username'],
-                        password=form.cleaned_data['password1'],
-                        email=form.cleaned_data['email'],
-                       )
-                    user.save()
+                    user =form.save()
                     login(request,user)
                     return redirect('home')
                 except IntegrityError:
@@ -48,3 +45,19 @@ def loginaccount(request):
 def logoutaccount(request):
   logout(request)
   return redirect('home')
+# @login_required
+def update_profile_image(request):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Get or create UserProfile for the current user
+            user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+            # Update the profile image
+            user_profile.image = form.cleaned_data['image']
+            user_profile.save()
+            return redirect('home')  # Redirect to the profile page after updating
+    else:
+        form = UserProfileForm()
+    return render(request, 'accounts/profile.html', {'form': form})
+
+             
