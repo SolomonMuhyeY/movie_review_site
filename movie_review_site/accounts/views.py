@@ -45,19 +45,23 @@ def loginaccount(request):
 def logoutaccount(request):
   logout(request)
   return redirect('home')
-# @login_required
+def profile(request):
+    user_profile = UserProfile.objects.get(user = request.user)
+    context = {'user_profile':user_profile}
+    return render(request,'accounts/profile.html',context)
+@login_required
 def update_profile_image(request):
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES)
         if form.is_valid():
-            # Get or create UserProfile for the current user
             user_profile, created = UserProfile.objects.get_or_create(user=request.user)
-            # Update the profile image
             user_profile.image = form.cleaned_data['image']
+            user_profile.hobby = form.cleaned_data['hobby']
+            user_profile.genre = form.cleaned_data['genre']
             user_profile.save()
             return redirect('home')  # Redirect to the profile page after updating
     else:
         form = UserProfileForm()
-    return render(request, 'accounts/profile.html', {'form': form})
+    return render(request, 'accounts/edit_profile.html', {'form': form})
 
              
