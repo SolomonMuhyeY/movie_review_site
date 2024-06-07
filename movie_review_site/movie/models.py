@@ -29,3 +29,13 @@ class Review(models.Model):
         return self.review_text[:50]
 
 
+class Vote(models.Model):
+    UPVOTE = 'upvote'
+    DOWNVOTE = 'downvote'
+    VOTE_CHOICES = [
+        (UPVOTE, 'Upvote'),
+        (DOWNVOTE, 'Downvote'),
+    ]
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+    vote_type = models.CharField(max_length=10, choices=VOTE_CHOICES)
