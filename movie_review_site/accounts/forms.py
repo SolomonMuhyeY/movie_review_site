@@ -32,4 +32,4 @@ class UserCreateForm(UserCreationForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['image']
+        fields = ['image','hobby','genre']
