@@ -13,3 +13,19 @@ class Movie(models.Model):
         return self.title
 
 
+class Review(models.Model):
+    review_text = models.TextField()
+    date = models.DateTimeField(auto_now_add=True, editable=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    
+    def upvotes(self):
+        return self.vote_set.filter(vote_type=Vote.UPVOTE).count()
+
+    def downvotes(self):
+        return self.vote_set.filter(vote_type=Vote.DOWNVOTE).count()
+
+    def __str__(self):
+        return self.review_text[:50]
+
+
