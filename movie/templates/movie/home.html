@@ -22,6 +22,15 @@ Movie Review Site
       <p class="text-gray-300">{{ movie.description }}</p>
     </div>
   </div>
+
+  {% empty %}
+  <div class="text-center text-gray-200 my-8">
+    <p class="text-2xl font-bold text-red-700">No Movies Found</p>
+    <p class="mt-2">Sorry, we couldn't find
+      <b class="text-red-500 px-1">{{search_movie}}</b>at the moment.
+    </p>
+    <p class="mt-2">Please check back later or explore other movies.</p>
+  </div>
   {% endfor %}
 </div>
 

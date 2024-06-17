@@ -12,10 +12,10 @@
       alt="{{ movie.title }}" />
   </div>
   <div class="flex-1 p-4 md:p-6 md:pt-4">
-    <a href="{% url 'detail' movie.id %}" class="">
+    <h2>
       <h5 class="text-3xl font-extrabold text-lime-300 hover:text-lime-400 transition-colors duration-300">
         {{movie.title }}</h5>
-    </a>
+    </h2>
     <p class="text-blue-400 italic my-2">{{ movie.date }} | {{ movie.author }}</p>
     <p class="text-gray-300">{{ movie.description }}</p>
     {% if user.is_authenticated %}
@@ -36,9 +36,43 @@
     <h6 class="text-sm text-blue-400 mb-2">
       {{ review.date }}
     </h6>
-    <p class="text-gray-300 mb-4">{{ review.review_text }}</p>
+    <p class="text-gray-300">{{ review.review_text }}</p>
+    <div class="text-xs font-extrabold flex gap-2 py-2">
+      <!-- Upvote Section -->
+      <div class="flex items-center">
+        <form action="{% url 'vote_review' review.id %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="vote_type" value="upvote">
+          <button type="submit"
+            class="focus:outline-none border-none bg-transparent
+                         {% if review.user_has_upvoted %}text-green-500{% else %}text-gray-500 hover:text-green-500 transition duration-200{% endif %}">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+            </svg>
+          </button>
+        </form>
+        <small class="text-lg">{{ review.upvotes }}</small>
+      </div>
+      <!-- Downvote Section -->
+      <div class="flex items-center">
+        <form action="{% url 'vote_review' review.id %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="vote_type" value="downvote">
+          <button type="submit"
+            class="focus:outline-none border-none bg-transparent
+                         {% if review.user_has_downvoted %}text-red-500{% else %}text-gray-500 hover:text-red-500 transition duration-200{% endif %}">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+        </form>
+        <small class="text-lg">{{ review.downvotes }}</small>
+      </div>
+    </div>
     {% if user.is_authenticated and user == review.user %}
-    <div class="flex gap-2">
+    <div class="my-3 flex gap-2">
       <a class="py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-lg shadow-lg hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 active:bg-blue-700 transition-transform transform hover:scale-105"
         href="{% url 'updatereview' review.id %}">
         Update
@@ -47,7 +81,6 @@
         href="{% url 'deletereview' review.id %}">
         Delete
       </a>
-
     </div>
     {% endif %}
   </div>
